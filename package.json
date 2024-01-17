@@ -1,5 +1,6 @@
 {
   "name": "labcamp",
+  "workspaces": ["packages/*"],
   "version": "1.0.0",
   "description": "Accessibility snippets",
   "main": "index.js",

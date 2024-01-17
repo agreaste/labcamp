@@ -1,24 +1,24 @@
-import './style.css'
-import typescriptLogo from './typescript.svg'
-import viteLogo from '/vite.svg'
-import { setupCounter } from './counter.ts'
+import './style.css';
+import './styles/carousel.css';
+import carouselTemplate from "./templates/carousel.html?raw";
+import Carousel, {CarouselControl, CarouselNext, CarouselPrevious} from "./components/carousel.ts";
+
+import {dom, library} from '@fortawesome/fontawesome-svg-core';
+import {faChevronLeft, faChevronRight, faPause, faPlay} from '@fortawesome/free-solid-svg-icons';
+
+// carousel
+library.add(faPause);
+library.add(faPlay);
+library.add(faChevronLeft);
+library.add(faChevronRight);
+
+dom.watch();
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://www.typescriptlang.org/" target="_blank">
-      <img src="${typescriptLogo}" class="logo vanilla" alt="TypeScript logo" />
-    </a>
-    <h1>Vite + TypeScript</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite and TypeScript logos to learn more
-    </p>
-  </div>
-`
+    ${carouselTemplate}
+`;
 
-setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
+customElements.define("my-carousel", Carousel, {extends: "div"});
+customElements.define('carousel-control', CarouselControl, {extends: 'button'});
+customElements.define('carousel-previous', CarouselPrevious, {extends: 'button'});
+customElements.define('carousel-next', CarouselNext, {extends: 'button'});

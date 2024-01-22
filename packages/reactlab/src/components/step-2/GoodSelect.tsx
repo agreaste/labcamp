@@ -15,7 +15,7 @@ export type BadSelectProps = {
 };
 
 const optionId = (prefix: string, index?: number) => {
-    return index ? `${prefix}-${index};` : undefined;
+    return index ? `${prefix}-${index}` : undefined;
 };
 
 const GoodSelect = ({options, label, onChange}: BadSelectProps) => {

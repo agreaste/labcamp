@@ -21,7 +21,10 @@ a {
 a:hover {
   color: #535bf2;
 }
-
+*{
+  outline-color: red;
+  outline-offset: 3px;
+}
 body {
   margin: 0;
   display: flex;
@@ -77,10 +80,7 @@ button {
 button:hover {
   border-color: #646cff;
 }
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
+
 
 @media (prefers-color-scheme: light) {
   :root {
@@ -93,4 +93,52 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+
+.dialog{
+  display: none;
+}
+
+
+.dialog__button{
+  color: white;
+  border: 1px solid white;
+  padding: 10px 20px;
+  margin-top: 50px;
+}
+.dialog.dialog--open{
+  display: block;
+  position: absolute;
+  top: 50%;
+  width: 50vw;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px;
+  color: black;
+  text-align: center;
+}
+
+.dialog__close{
+  position: absolute;
+  right: 20px;
+}
+
+.dialog__title{
+  padding-bottom: 30px;
+}
+
+.dialog__input{
+  padding: 5px;
+  margin-bottom: 10px;
+  width: 90%;
+  background-color: white;
+  color: black;
+}
+
+.dialog__cont{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }

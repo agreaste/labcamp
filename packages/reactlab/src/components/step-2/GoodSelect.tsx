@@ -1,7 +1,6 @@
-import {createRef, KeyboardEventHandler, useCallback, useEffect, useId, useMemo, useReducer} from "react";
+import {createRef, KeyboardEventHandler, useCallback, useEffect, useId, useMemo, useState} from "react";
 import styles from "./good-select.module.css";
 import {useOnClickOutside} from "usehooks-ts";
-import {selectReducer} from "../step-3/context.ts";
 
 export type OptionProps = {
     label: string;
@@ -15,13 +14,14 @@ export type BadSelectProps = {
 };
 
 const optionId = (prefix: string, index?: number) => {
-    return index ? `${prefix}-${index}` : undefined;
+    return index ? `${prefix}-${index};` : undefined;
 };
 
 const GoodSelect = ({options, label, onChange}: BadSelectProps) => {
     const containerRef = createRef<HTMLDivElement>();
-    const [state, dispatch] = useReducer(selectReducer, {expanded: false, options});
-    const {selected, active, expanded} = state;
+    const [selected, setSelected] = useState<undefined | string>(undefined);
+    const [active, setActive] = useState<undefined | number>(undefined);
+    const [expanded, setExpanded] = useState<boolean>(false);
 
     // aria vars
     const labelId = useId();
@@ -38,8 +38,13 @@ const GoodSelect = ({options, label, onChange}: BadSelectProps) => {
         changeHandler(selected);
     }, [changeHandler, selected]);
 
+    useEffect(() => {
+        if(!expanded)
+            setActive(undefined);
+    }, [expanded]);
+
     useOnClickOutside(containerRef, () => {
-        dispatch({type: "list/toggle", payload: false});
+        setExpanded(false);
     });
 
     const selectedLabel = useMemo(() => {
@@ -58,35 +63,46 @@ const GoodSelect = ({options, label, onChange}: BadSelectProps) => {
         switch (event.key) {
             case "ArrowDown":
                 if (!expanded) {
-                    dispatch({type: "list/toggle", payload: true})
+                    setExpanded(true);
                 } else {
-                    dispatch({type: "option/next"});
+                    if (active === undefined)
+                        setActive(0)
+                    else
+                        setActive((active + 1) % options.length)
                 }
                 break;
             case "ArrowUp":
-                dispatch({type: "option/previous"});
+                if (!expanded || active === undefined)
+                    break;
+
+                if (active === 0)
+                    setActive(options.length - 1)
+                else
+                    setActive(active - 1);
                 break;
             case " ":
                 if (!expanded)
-                    dispatch({type: "list/toggle", payload: true})
+                    setExpanded(true)
                 if (expanded && active !== undefined) {
-                    dispatch({type: "option/selectActive"})
+                    setSelected(options[active].value);
+                    setExpanded(false);
                 }
                 break;
             case "Escape":
-                dispatch({type: "list/toggle", payload: false})
+                setExpanded(false);
                 break;
             default:
         }
-    }, [expanded, active]);
+    }, [expanded, active, options]);
 
     const optionClick = (value: string) => {
-        dispatch({type: "option/select", payload: value})
+        setSelected(value);
+        setExpanded(false);
     };
 
     return <div className={styles.container} ref={containerRef}>
         <p id={labelId} className={styles.label}>{label}</p>
-        <button className={styles.trigger} onClick={() => dispatch({type: "list/toggle", payload: true})}
+        <button className={styles.trigger} onClick={() => setExpanded(true)}
             // aria attributes
                 role={"combobox"}
                 aria-controls={expanded ? listId : undefined}
@@ -105,7 +121,7 @@ const GoodSelect = ({options, label, onChange}: BadSelectProps) => {
                         options.map(({label, value}, i) => (
                             <li key={i} className={optionClasses(value, i)} onClick={() => optionClick(value)}
                                 // aria attributes
-                                onMouseEnter={() => dispatch({type: "option/activate"})}
+                                onMouseEnter={() => setActive(i)}
                                 id={optionId(optionPrefix, i)}
                                 role={"option"}
                                 aria-selected={value === selected}

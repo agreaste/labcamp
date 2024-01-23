@@ -60,7 +60,7 @@ const BadSelect = ({options, label, onChange}: BadSelectProps) => {
                 </ul>
             }
         </div>
-    </div>
+    </div>;
 };
 
 export default BadSelect;

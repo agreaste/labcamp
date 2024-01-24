@@ -17,6 +17,7 @@ class Carousel extends HTMLDivElement {
         else
             throw new Error(`${this}: no parent element.`);
 
+        this.slides[0].classList.add("carousel_slide--active");
         this.activeSlide = new BehaviorSubject(this.slides[0]);
         this.autoplay = new BehaviorSubject(setInterval(() => {
             this.nextSlide();
@@ -37,7 +38,7 @@ class Carousel extends HTMLDivElement {
             });
         });
 
-        // this.startAutoplay();
+        this.startAutoplay();
     }
 
     nextSlide() {
@@ -58,10 +59,6 @@ class Carousel extends HTMLDivElement {
     startAutoplay() {
         if (!this.autoplay)
             this.autoplay = new BehaviorSubject(setInterval(() => {
-                this.nextSlide();
-            }, 4000));
-        else
-            this.autoplay.next(setInterval(() => {
                 this.nextSlide();
             }, 4000));
     }
@@ -88,7 +85,7 @@ class CarouselButton extends HTMLButtonElement {
 
     constructor() {
         super();
-        const pc = this.closest('[aria-roledescription="carousel"]');
+        const pc = this.closest<Carousel>('[aria-roledescription="carousel"]');
         if (pc)
             this.parentCarousel = pc as Carousel;
         else

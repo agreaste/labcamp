@@ -19,12 +19,8 @@ export default {
     methods: {
         openMenu(index){
             this.isOpen = this.isOpen == index ? null : index;
-            let submenu = this.voicesLink[index].nextSibling;
-            this.$nextTick(() => {
-                this.subMenuVoices = submenu.getElementsByClassName('j-submenuLink');
             });
         },
-
     }
 }
 
@@ -38,14 +34,16 @@ export default {
 <template>
     <header class="header">
         <a class="header__logo" href="#"><h1>LOGO</h1></a>
-        <div aria-label="main menu" class="menu">
+        <div class="menu">
             <div class="menu__aux">
-                
-                <div class="menu__firstLevel">
-                    <div v-for="(menuItem, index) in menuList" class="menu__firstLevelVoice" :class = "{'menu__firstLevelVoice--open' : isOpen == index}">
+                <ul class="menu__firstLevel">
+                    <li v-for="(menuItem, index) in menuList" 
+                        class="menu__firstLevelVoice" 
+                        :class = "{'menu__firstLevelVoice--open' : isOpen == index}">
                         <template v-if="menuItem.submenu">
                             <a :href= menuItem.link 
                             @click.prevent="openMenu(index)"
+                            @keyup.prevent ="keyDownTrack(index)"
                             class="menu__firstLevelLink j-firstLink"> 
                                 {{ menuItem.text }}
                                 <span class="menu__firstLevelIcon" :class = "{'menu__firstLevelIcon--open' : isOpen == index}"> > </span>
@@ -54,27 +52,30 @@ export default {
                         </template>
                         <template v-else>
                             <a 
-                            role="menuitem" :href="menuItem.link " class="menu__firstLevelLink j-firstLink"> 
+                            @keyup.prevent ="keyDownTrack(index)" 
+                            :href="menuItem.link " 
+                            class="menu__firstLevelLink j-firstLink"> 
                                 {{ menuItem.text }}
                             </a>
                         </template>
 
-                        <div
+                        <ul
                         v-if="menuItem.submenu" 
-                        class="menu__secondLevel" 
+                        class="menu__secondLevel"
                         :class = "{'menu__secondLevel--open' : isOpen == index}">
-                            <div class="menu__secondLevelVoice" v-for="(subitem, index) in menuItem.submenu">
+                            <li role="none"
+                                class="menu__secondLevelVoice" v-for="(subitem, index) in menuItem.submenu">
                                 <a 
                                 :href="subitem.link"
                                 class="menu__secondLevelLink j-submenuLink">
                                     {{ subitem.text }}
                                 </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
             </div>
-        </div>
+        </nav>
         <button class="header__signIn">
             Accedi
         </button>

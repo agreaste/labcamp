@@ -103,22 +103,16 @@ export default {
 
 
 <template>
-    <header class="header" role="banner">
+    <header class="header">
         <a class="header__logo" href="#"><h1>LOGO</h1></a>
-        <nav aria-label="main menu" class="menu">
+        <div class="menu">
             <div class="menu__aux">
-                <ul class="menu__firstLevel"
-                    role="menubar"
-                    aria-label="main menu">
+                <ul class="menu__firstLevel">
                     <li v-for="(menuItem, index) in menuList" 
-                        role="none" class="menu__firstLevelVoice" 
+                        class="menu__firstLevelVoice" 
                         :class = "{'menu__firstLevelVoice--open' : isOpen == index}">
                         <template v-if="menuItem.submenu">
                             <a :href= menuItem.link 
-                            role="menitem"
-                            :tabindex = "hasTabindex == index ? 0 : -1 "
-                            aria-haspopup="true"
-                            :aria-expanded="this.isOpen == index ? true : false"
                             @click.prevent="openMenu(index)"
                             @keyup.prevent ="keyDownTrack(index)"
                             class="menu__firstLevelLink j-firstLink"> 
@@ -129,9 +123,7 @@ export default {
                         </template>
                         <template v-else>
                             <a 
-                            :tabindex = "hasTabindex == index ? 0 : -1"
                             @keyup.prevent ="keyDownTrack(index)" 
-                            role="menuitem" 
                             :href="menuItem.link " 
                             class="menu__firstLevelLink j-firstLink"> 
                                 {{ menuItem.text }}
@@ -140,17 +132,13 @@ export default {
 
                         <ul
                         v-if="menuItem.submenu" 
-                        class="menu__secondLevel" 
-                        role="menu" 
-                        :class = "{'menu__secondLevel--open' : isOpen == index}"
-                        :aria-label="menuItem.text">
+                        class="menu__secondLevel"
+                        :class = "{'menu__secondLevel--open' : isOpen == index}">
                             <li role="none"
                                 class="menu__secondLevelVoice" v-for="(subitem, index) in menuItem.submenu">
-                                <a role="menuitem" 
+                                <a 
                                 :href="subitem.link"
-                                @keydown = keyDownTrackSubmenu(index)
-                                class="menu__secondLevelLink j-submenuLink"
-                                :tabindex= "isOpen != index ? -1 : 0" >
+                                class="menu__secondLevelLink j-submenuLink">
                                     {{ subitem.text }}
                                 </a>
                             </li>

@@ -10,26 +10,26 @@ export default class Dialog {
         button?.addEventListener('click', () => {
             dialog?.classList.add('dialog--open');
             const focusableElementsSelector = 'a[href], input:not([disabled]), button, [tabindex="0"], [tabindex="1"]';
-            let focusableElements = dialog?.querySelectorAll(focusableElementsSelector)
+            let focusableElements = dialog?.querySelectorAll<HTMLElement>(focusableElementsSelector)
             const firstTabStop = focusableElements && focusableElements[0];
             const lastTabStop =  focusableElements && focusableElements[focusableElements.length - 1];
-            firstTabStop && (firstTabStop as HTMLElement).focus();
+            firstTabStop?.focus();
     
             dialog?.addEventListener('keydown', (e) => {
-                if(e.keyCode === 9){
+                if(e.key === 'Tab'){
                     if(e.shiftKey){
                         if(document.activeElement === firstTabStop){
                             e.preventDefault();
-                            lastTabStop && (lastTabStop as HTMLElement).focus();
+                            lastTabStop?.focus();
                         }
                     }else {
                         if(document.activeElement === lastTabStop){
                             e.preventDefault();
-                            firstTabStop && (firstTabStop as HTMLElement).focus();
+                            firstTabStop?.focus();
                         }
                     }
                 }
-                if(e.keyCode === 27){
+                if(e.key === 'Escape'){
                     button && button.focus();
                     dialog?.classList.remove('dialog--open');
                 }

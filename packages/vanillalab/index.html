@@ -9,20 +9,10 @@
   </head>
   <body>
     <div id="app">
-      <button class="dialog__button" id="openButton">
-        Open Dialog
-      </button>
-      <div role="dialog" class="dialog" id="dialog">
-        <button class="dialog__close" id="closeButton"> Close </button>
-          <div class="dialog__cont">
-            <h2 class="dialog__title">
-                Inserisci i tuoi dati 
-            </h2>
-            <label class="dialog__label" for="name">Name  <span aria-label="obbligatorio">* </span> </label>
-            <input class="dialog__input" ref="name" type="text" id="name" name="name" required  />
-            <button class="dialog__button" id="confirmButton"> Confirm </button>
-          </div>
-      </div>
+      <section aria-labelledby="good-carousel">
+        <h2 id="good-carousel">Good carousel</h2>
+        ${carouselTemplate}
+      </section>
     </div>
     <script type="module" src="/src/main.ts"></script>
   </body>

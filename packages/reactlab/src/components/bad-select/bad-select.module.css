@@ -1,0 +1,27 @@
+.container {
+    @apply p-4;
+}
+
+.label {
+    @apply text-lg font-bold;
+}
+
+.trigger {
+    @apply px-4 py-2 border w-full;
+}
+
+.listContainer {
+    @apply relative;
+}
+
+.listWrapper {
+    @apply border absolute z-10 w-full bg-white;
+}
+
+.listOption {
+    @apply cursor-pointer hover:bg-slate-200 p-2;
+}
+
+.listOption--selected {
+    @apply font-bold;
+}

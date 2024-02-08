@@ -1,6 +1,7 @@
 <script>
 import { ref, onMounted } from 'vue'
 
+
 export default {
    data(){
        return {
@@ -123,7 +124,6 @@ export default {
                             @keyup.prevent ="keyDownTrack(index)"
                             class="menu__firstLevelLink j-firstLink"> 
                                 {{ menuItem.text }}
-                                <span class="menu__firstLevelIcon" :class = "{'menu__firstLevelIcon--open' : isOpen == index}"> > </span>
                             </a>
                             
                         </template>
@@ -148,7 +148,7 @@ export default {
                                 class="menu__secondLevelVoice" v-for="(subitem, index) in menuItem.submenu">
                                 <a role="menuitem" 
                                 :href="subitem.link"
-                                @keydown = keyDownTrackSubmenu(index)
+                                @keyup.prevent = keyDownTrackSubmenu(index)
                                 class="menu__secondLevelLink j-submenuLink"
                                 :tabindex= "isOpen != index ? -1 : 0" >
                                     {{ subitem.text }}
@@ -242,6 +242,10 @@ export default {
 .menu__secondLevel.menu__secondLevel--open{
     display: block;
     width: 100%;
+    z-index: 1;
+    opacity: 1;
+    visibility: visible;
+    pointer-event: auto;
 }
 
 .menu__firstLevelVoice--open::after{
@@ -249,7 +253,9 @@ export default {
 }
 
 .menu__secondLevel{
-    display: none;
+    opacity: 0;
+    visibility: hidden;
+    pointer-event: none;
     position: absolute;
     top: 100%;
     padding: 0;

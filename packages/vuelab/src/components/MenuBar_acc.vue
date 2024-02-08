@@ -19,8 +19,7 @@ export default {
     methods: {
         openMenu(index){
             this.isOpen = this.isOpen == index ? null : index;
-            });
-        },
+        }
     }
 }
 
@@ -46,7 +45,6 @@ export default {
                             @keyup.prevent ="keyDownTrack(index)"
                             class="menu__firstLevelLink j-firstLink"> 
                                 {{ menuItem.text }}
-                                <span class="menu__firstLevelIcon" :class = "{'menu__firstLevelIcon--open' : isOpen == index}"> > </span>
                             </a>
                             
                         </template>
@@ -75,7 +73,7 @@ export default {
                     </li>
                 </ul>
             </div>
-        </nav>
+        </div>
         <button class="header__signIn">
             Accedi
         </button>
@@ -159,6 +157,9 @@ export default {
 .menu__secondLevel.menu__secondLevel--open{
     display: block;
     width: 100%;
+    z-index: 1;
+    opacity: 1;
+    visibility: visible;
 }
 
 .menu__firstLevelVoice--open::after{
@@ -166,7 +167,7 @@ export default {
 }
 
 .menu__secondLevel{
-    display: none;
+    opacity: 0;
     position: absolute;
     top: 100%;
     padding: 0;
@@ -176,6 +177,7 @@ export default {
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
 }
+
 
 .menu__secondLevelVoice{
     padding: 12px 30px;
